@@ -46,8 +46,6 @@ def partOne():
 
     gammaStr = ''.join(gamma)
     epsilonStr = ''.join(epsilon)
-    print(gammaStr)
-    print(epsilonStr)
 
     finalResult = binaryToDecimal(
         int(gammaStr)) * binaryToDecimal(int(epsilonStr))
@@ -58,7 +56,59 @@ def partTwo():
     """ Use readings to find a final number which is final horizontal multiplied by final depth.
     This time with different rules and a third variable called aim. """
     filePath = pathlib.Path(__file__).parent.resolve()
-    return None
+    oxygenRating = 0
+    co2Rating = 0
+
+    with open(f'{filePath}/input.txt') as f:
+        lines = f.readlines()
+        currLines = lines[:]
+        column = 0
+        while len(currLines) > 1:
+            bitCount = [0, 0]
+            leftRightList = [[], []]
+            for line in currLines:
+                line = line.strip('\n')
+                currBit = line[column]
+
+                if currBit == '0':
+                    bitCount[0] += 1
+                    leftRightList[0].append(line)
+                else:
+                    bitCount[1] += 1
+                    leftRightList[1].append(line)
+            column += 1
+
+            if bitCount[0] > bitCount[1]:
+                currLines = leftRightList[0]
+            else:
+                currLines = leftRightList[1]
+        oxygenRating = binaryToDecimal(int(currLines[0]))
+
+        currLines = lines[:]
+        column = 0
+        while len(currLines) > 1:
+            bitCount = [0, 0]
+            leftRightList = [[], []]
+            for line in currLines:
+                line = line.strip('\n')
+                currBit = line[column]
+
+                if currBit == '0':
+                    bitCount[0] += 1
+                    leftRightList[0].append(line)
+                else:
+                    bitCount[1] += 1
+                    leftRightList[1].append(line)
+            column += 1
+
+            if bitCount[0] > bitCount[1]:
+                currLines = leftRightList[1]
+            else:
+                currLines = leftRightList[0]
+
+        co2Rating = binaryToDecimal(int(currLines[0]))
+    result = oxygenRating * co2Rating
+    return result
 
 
 if __name__ == "__main__":
