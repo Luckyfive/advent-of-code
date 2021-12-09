@@ -47,9 +47,6 @@ class Board:
             if number in column:
                 self.columnScores[columnCounter] += 1
                 if self.columnScores[columnCounter] == len(self.columns):
-                    print("we've got a winner via columns!")
-                    print(f"{index}")
-
                     if self.winningIndex == None:
                         self.winningIndex = index
                     else:
@@ -64,18 +61,12 @@ class Board:
             if number in row:
                 self.rowScores[rowCounter] += 1
                 if self.rowScores[rowCounter] == 5:
-                    print("we've got a winner via rows!")
-                    print(f"{index}")
-
                     if self.winningIndex == None:
                         self.winningIndex = index
                     else:
                         if index < self.winningIndex:
                             self.winningIndex = index
                     self.ignoreBoard = True
-
-                # print(
-                #     f"board {self.id} contains this number: {number} with row: {row}")
             rowCounter += 1
 
     def getWinningNumbers(self):
@@ -106,7 +97,7 @@ class Board:
 
 
 def partOne():
-    """ Use binary numbers to  calculate gamma and epsilon rates."""
+    """ Get a final number from the bingo board that wins first. """
     filePath = pathlib.Path(__file__).parent.resolve()
     winningNums = []
     boards = []
@@ -121,7 +112,6 @@ def partOne():
                 winningNums = line.split(',')
                 winningNums = [int(numeric_string)
                                for numeric_string in winningNums]
-                print(winningNums)
             else:
                 if line == '':
                     currentBoard = Board(boardCounter)
@@ -144,19 +134,13 @@ def partOne():
         smallestIndex = None
         winningBoardId = None
         for board in boards:
-            board.getScores()
-
             if board.winningIndex != None:
-                print("we've got a winner board")
                 if smallestIndex == None:
                     smallestIndex = board.winningIndex
                     winningBoardId = board.id
                 elif board.winningIndex < smallestIndex:
                     smallestIndex = board.winningIndex
                     winningBoardId = board.id
-
-        print(
-            f"smallest index: {smallestIndex}; winning board: {winningBoardId}")
 
         unmarkedNums = []
         unmarkedSum = 0
@@ -167,23 +151,68 @@ def partOne():
                 if currNum in winningNums[:winningBoard.winningIndex+1]:
                     continue
                 else:
-                    print(f"found number that is unmarked: {currNum}")
                     unmarkedNums.append(currNum)
                     unmarkedSum += currNum
-        print(winningBoard.rows)
-        print(unmarkedNums)
-        print(winningNums[:winningBoard.winningIndex+1])
-        print(winningBoard.getWinningNumbers())
-        print(f"unmarked sum: {unmarkedSum}; unmarked nums: {unmarkedNums}")
-        print(
-            f"last number called: {winningNums[winningBoard.winningIndex]}")
         return unmarkedSum * winningNums[winningBoard.winningIndex]
 
 
 def partTwo():
-    """ Use readings to find a final number which is final horizontal multiplied by final depth.
-    This time with different rules and a third variable called aim. """
-    return None
+    """ Get a final number from the bingo board that wins first. """
+    filePath = pathlib.Path(__file__).parent.resolve()
+    winningNums = []
+    boards = []
+
+    with open(f'{filePath}/input.txt') as f:
+        lines = f.readlines()
+        lineCounter = 0
+        boardCounter = 0
+        for line in lines:
+            line = line.strip('\n')
+            if lineCounter == 0:
+                winningNums = line.split(',')
+                winningNums = [int(numeric_string)
+                               for numeric_string in winningNums]
+            else:
+                if line == '':
+                    currentBoard = Board(boardCounter)
+                    boards.append(currentBoard)
+                    boardCounter += 1
+                else:
+                    line = line.split()
+                    line = [int(numeric_string)
+                            for numeric_string in line]
+                    currentBoard.addRow(line)
+            lineCounter += 1
+
+        for index, number in enumerate(winningNums):
+            for board in boards:
+                board.setColumns()
+                if board.ignoreBoard == False:
+                    board.checkNumber(number, index)
+
+        biggestIndex = None
+        winningBoardId = None
+        for board in boards:
+            if board.winningIndex != None:
+                if biggestIndex == None:
+                    biggestIndex = board.winningIndex
+                    winningBoardId = board.id
+                elif board.winningIndex > biggestIndex:
+                    biggestIndex = board.winningIndex
+                    winningBoardId = board.id
+
+        unmarkedNums = []
+        unmarkedSum = 0
+        winningBoard = boards[winningBoardId]
+        winningRows = winningBoard.rows
+        for row in winningRows:
+            for currNum in row:
+                if currNum in winningNums[:winningBoard.winningIndex+1]:
+                    continue
+                else:
+                    unmarkedNums.append(currNum)
+                    unmarkedSum += currNum
+        return unmarkedSum * winningNums[winningBoard.winningIndex]
 
 
 if __name__ == "__main__":
