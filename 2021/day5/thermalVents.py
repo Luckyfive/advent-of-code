@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
 import pathlib
 import re
+from typing import final
 
 
 def partOne():
     """ Given vectors, find how many points have major overlap. """
     filePath = pathlib.Path(__file__).parent.resolve()
+    finalPointMap = {}
+    finalCount = 0
     with open(f'{filePath}/input.txt') as f:
         lines = f.readlines()
         for line in lines:
@@ -16,12 +19,40 @@ def partOne():
             y1 = int(match.group("y1"))
             x2 = int(match.group("x2"))
             y2 = int(match.group("y2"))
-            print(f'x1 {x1} y1 {y1} x2 {x2} y2 {y2}')
-            if x1 == x2 or y1 == y2:
-                print("not skipped!")
+
+            if x1 == x2:
+                difference = y1 - y2
+                currStep = 1
+                if difference < 0:
+                    currStep = -1
+                for diff in range(0, y1-(y2-currStep), currStep):
+                    currY = y1-diff
+                    coordinate = f"{x1},{currY}"
+                    if coordinate not in finalPointMap:
+                        finalPointMap[coordinate] = 1
+                    else:
+                        currentValue = finalPointMap.get(coordinate)
+                        finalPointMap[coordinate] = currentValue + 1
+            elif y1 == y2:
+                difference = x1 - x2
+                currStep = 1
+                if difference < 0:
+                    currStep = -1
+                for diff in range(0, x1-(x2-currStep), currStep):
+                    currX = x1-diff
+                    coordinate = f"{currX},{y1}"
+                    if coordinate not in finalPointMap:
+                        finalPointMap[coordinate] = 1
+                    else:
+                        currentValue = finalPointMap.get(coordinate)
+                        finalPointMap[coordinate] = currentValue + 1
             else:
-                print("skipped!")
-    return None
+                continue
+        
+        for key, value in finalPointMap.items():
+            if value >= 2:
+                finalCount += 1
+    return finalCount
 
 
 def partTwo():
