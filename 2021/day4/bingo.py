@@ -157,7 +157,7 @@ def partOne():
 
 
 def partTwo():
-    """ Get a final number from the bingo board that wins first. """
+    """ Get a final number from the bingo board that wins last. """
     filePath = pathlib.Path(__file__).parent.resolve()
     winningNums = []
     boards = []
