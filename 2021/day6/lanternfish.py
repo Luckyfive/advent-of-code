@@ -6,7 +6,7 @@ import math
 def partOne():
     """ Given certain conditions, return how many lanternfish are there after 80 days."""
     filePath = pathlib.Path(__file__).parent.resolve()
-    finalCounts = [0] * 9;
+    finalCounts = [0] * 9
 
     with open(f'{filePath}/input.txt') as f:
         lines = f.readlines()
@@ -36,7 +36,7 @@ def partOne():
 def partTwo():
     """ Given certain conditions, return how many lanternfish are there after 256 days."""
     filePath = pathlib.Path(__file__).parent.resolve()
-    finalCounts = [0] * 9;
+    finalCounts = [0] * 9
 
     with open(f'{filePath}/input.txt') as f:
         lines = f.readlines()
