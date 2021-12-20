@@ -23,8 +23,6 @@ def partOne():
                     spawned = finalCounts[0]
                 else:
                     finalCounts[index-1] = finalCounts[index]
-                
-                finalCounts[index] = 0
             
             finalCounts[6] += spawned
             finalCounts[8] = spawned
@@ -55,8 +53,6 @@ def partTwo():
                     spawned = finalCounts[0]
                 else:
                     finalCounts[index-1] = finalCounts[index]
-                
-                finalCounts[index] = 0
             
             finalCounts[6] += spawned
             finalCounts[8] = spawned
