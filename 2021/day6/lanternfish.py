@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 import pathlib
-import re
-import math
+
 
 def partOne():
     """ Given certain conditions, return how many lanternfish are there after 80 days."""
@@ -23,7 +22,7 @@ def partOne():
                     spawned = finalCounts[0]
                 else:
                     finalCounts[index-1] = finalCounts[index]
-            
+
             finalCounts[6] += spawned
             finalCounts[8] = spawned
 
@@ -53,7 +52,7 @@ def partTwo():
                     spawned = finalCounts[0]
                 else:
                     finalCounts[index-1] = finalCounts[index]
-            
+
             finalCounts[6] += spawned
             finalCounts[8] = spawned
 
@@ -61,6 +60,7 @@ def partTwo():
         for currCount in finalCounts:
             result += currCount
     return result
+
 
 if __name__ == "__main__":
     print(f"partOne: {partOne()}")

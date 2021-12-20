@@ -1,12 +1,8 @@
 #!/usr/bin/env python3
-from ast import Index
-import os
 import pathlib
 
 
 def binaryToDecimal(binary):
-
-    binary1 = binary
     decimal, i, n = 0, 0, 0
     while(binary != 0):
         dec = binary % 10
